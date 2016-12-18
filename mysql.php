@@ -98,6 +98,8 @@ class Mysql {
 
         $result = $this->conn->query($sql);
 
+        // print_r ($result->num_rows);
+
         if ($result->num_rows > 0) {
 
             $arr = array();
@@ -115,9 +117,32 @@ class Mysql {
            return null;
         }
     }
+
+    /**
+     * delete by id
+     * @return [type] [description]
+     */
+    function delete_by_id($id, $table_name){
+
+        $sql = "DELETE FROM $table_name WHERE id=$id";
+        $this->conn->query($sql);
+
+    }
+
+
+    /**
+     * alter
+     * @return [type] [description]
+     */
+    function alter($table_name,$id,$count){
+
+        $sql = "UPDATE $table_name SET `count`= $count WHERE id=$id";
+        $this->conn->query($sql);
+
+    }
 }
 
-$mys = new Mysql;
+// $mys = new Mysql;
 
 // $sql = "INSERT INTO good_proxy (ip,port) VALUES ('111', '2222')";
 // // $mys->insert($sql);

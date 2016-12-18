@@ -1,6 +1,22 @@
 <?php
 
+require( './html-parser-master/vendor/autoload.php');
+include_once "./mysql.php";
+include_once "./common.php";
+include_once "./source_url.php";
+
 class Common {
+
+    // public $conn = null;
+    // public $source = null;
+
+    // function __construct(){
+
+    //     //initial mysql.php
+    //     $this->conn = new Mysql;
+    //     //initial source_url.php
+    //     $this->source = new Url_source;
+    // }
 
     //current not to use
     // public $url = array(

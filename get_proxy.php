@@ -9,22 +9,14 @@ include_once "./source_url.php";
 class Get_proxy {
 
 
-    public $conn = null;
-    public $com = null;
     public $source = null;
 
     /**
      * initial
      */
     function __construct(){
-
-        //initial mysql.php
-        $this->conn = new Mysql;
         //initial common.php
-        $this->com = new Common;
-        //initial source_url.php
         $this->source = new Url_source;
-
     }
 
     /**
@@ -38,20 +30,33 @@ class Get_proxy {
     /**
      * crul get html
      */
-    function file_get_contents_curl($url) {
-        $ch = curl_init();
-        // $proxy = "175.8.16.170:8998";
-        curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
-        // curl_setopt($ch, CURLOPT_PROXY, $proxy);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+    function file_get_contents_curl($url,$proxy=null) {
 
-        $data = curl_exec($ch);
-        curl_close($ch);
+        try {
 
-        return $data;
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,0);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 1); //timeout in seconds
+            curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
+
+            if($proxy != null){
+
+                curl_setopt($ch, CURLOPT_PROXY, $proxy);
+            }
+
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+
+            $data = curl_exec($ch);
+            curl_close($ch);
+
+            return $data;
+        }
+            catch(Exception $ex){
+                return null;
+            }
     }
 
     /**
@@ -147,16 +152,9 @@ class Get_proxy {
 
 
 
-
-
 }
 
 
-$mm = new Get_proxy;
-
-$mm->from_kuaidaili();
-// print "im proxy360 ******************"."\n";
-$mm->from_proxy360();
 
 
 

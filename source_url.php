@@ -2,11 +2,20 @@
 
 
 require( './html-parser-master/vendor/autoload.php');
-include_once "./mysql.php";
-include_once "./common.php";
-include_once "./source_url.php";
+
 
 class Url_source {
+
+
+    function save_mysql($ar){
+
+        $mysql = new Mysql;
+        $ip = $ar['ip'];
+        $port = $ar['port'];
+        $sql = "INSERT INTO source_proxy (ip,port) VALUES ('$ip', '$port')";
+        $mysql->insert($sql);
+
+    }
 
 
     /**
@@ -27,7 +36,10 @@ class Url_source {
 
             $ip = $line->find('td[data-title=IP]',0)->getPlainText();
             $port = $line->find('td[data-title=PORT]',0)->getPlainText();
-            echo $ip.":".$port."\n";
+            // $proxy = $ip.":".$port."\n";
+            $ar = array('ip'=>$ip , 'port'=>$port);
+            $this->save_mysql($ar);
+
         }
     }
 
@@ -81,7 +93,9 @@ class Url_source {
                 $ip = trim($ip);
                 $port = trim($port);
                 $new_proxy = $ip.":".$port;
-                echo $new_proxy."\n";
+                // $proxy = $ip.":".$port."\n";
+                $ar = array('ip'=>$ip , 'port'=>$port);
+                $this->save_mysql($ar);
             }
 
         }
