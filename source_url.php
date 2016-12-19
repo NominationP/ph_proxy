@@ -51,18 +51,22 @@ class Url_source {
         function from_xicidaili($dom){
 
 
-            // $count = 0;
-            // foreach ($dom->find('tr') as $line) {
+            $count = 0;
+            $dom = $dom->find('table#ip_list tr');
 
-            //     $count += 1;
-            //     if ($count == 1){
-            //         continue;
-            //     }
 
-            //     $ip = $line->find('td[data-title=IP]',0)->getPlainText();
-            //     $port = $line->find('td[data-title=PORT]',0)->getPlainText();
-            //     echo $ip.":".$port."\n";
-            // }
+            foreach ($dom as $line) {
+                $count += 1;
+                if ($count == 1){
+                    continue;
+                }
+
+                $ip = $line->find('td',1)->getPlainText();
+                $port = $line->find('td',2)->getPlainText();
+                // echo $ip.":".$port."\n";
+                $ar = array('ip'=>$ip , 'port'=>$port);
+                $this->save_mysql($ar);
+            }
 
         }
 

@@ -4,12 +4,14 @@ require( './html-parser-master/vendor/autoload.php');
 include_once "./mysql.php";
 include_once "./common.php";
 include_once "./source_url.php";
+include_once "./curl.php";
 
 
 class Get_proxy {
 
 
     public $source = null;
+    public $curl_class = null;
 
     /**
      * initial
@@ -17,6 +19,8 @@ class Get_proxy {
     function __construct(){
         //initial common.php
         $this->source = new Url_source;
+        $this->curl_class = new Curl;
+
     }
 
     /**
@@ -34,11 +38,12 @@ class Get_proxy {
 
         try {
 
+            usleep(40000);
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,0);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 1); //timeout in seconds
+            curl_setopt($ch, CURLOPT_TIMEOUT, 5); //timeout in seconds
             curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
-
+            curl_setopt($ch,CURLOPT_USERAGENT,$this->curl_class->agents[array_rand($this->curl_class->agents)]);
             if($proxy != null){
 
                 curl_setopt($ch, CURLOPT_PROXY, $proxy);
@@ -55,6 +60,7 @@ class Get_proxy {
             return $data;
         }
             catch(Exception $ex){
+                echo "$ex"." ";
                 return null;
             }
     }
@@ -77,6 +83,11 @@ class Get_proxy {
     function get_dom($url){
 
         $sHtml = $this->file_get_contents_curl($url);
+
+        if($sHtml == null) {
+            return null;
+        }
+
         $dom = $this->analy($sHtml);
 
         return $dom;
@@ -93,16 +104,24 @@ class Get_proxy {
     function from_kuaidaili(){
 
         //1-10 pages
+        for ($i=1; $i <= 3 ; $i++) {
 
-        for ($i=1; $i <= 10 ; $i++) {
+            print $i." ";
 
-            // print $i."****************"."\n";
-
-            $url = 'http://www.kuaidaili.com/proxylist/1';
+            $url = 'http://www.kuaidaili.com/proxylist/'."$i";
             $dom = $this->get_dom($url);
+
+            if($dom==null){
+                echo "$i.XXX";
+                continue;
+            }
+
+
             $this->source->from_kuaidaili($dom);
 
         }
+
+        echo "over********";
 
     }
 
@@ -115,6 +134,26 @@ class Get_proxy {
      */
 
     function from_xicidaili(){
+
+        //1-10 pages
+        for ($i=1; $i <= 1 ; $i++) {
+
+            print $i." ";
+
+            $url = 'http://www.xicidaili.com/nn/'."$i";
+            $dom = $this->get_dom($url);
+
+            if($dom==null){
+                echo "$i.XXX";
+                continue;
+            }
+
+
+            $this->source->from_xicidaili($dom);
+
+        }
+
+        echo "over********";
 
 
 
@@ -130,7 +169,17 @@ class Get_proxy {
 
         $url = 'http://www.proxy360.cn/default.aspx';
         $dom = $this->get_dom($url);
-        $this->source->from_proxy360($dom);
+
+        if($dom==null){
+
+            echo "$url.XXX";
+
+        }else{
+
+            $this->source->from_proxy360($dom);
+
+        }
+
 
     }
 
