@@ -15,9 +15,11 @@
 
         class source_proxy  { function check() { common-->check() } }
         class good_proxy    { function check() { common-->check() } }
-
-
     ```
+
+- 2016.12.19 20:35
+    - pthread spend me all most one day , and nothing done ... my php Thread Safety is disabled .... i can't change it (until now...i want to cry ~.~)
+    - 95% done . except thread and log(little)
 
 
 
