@@ -35,8 +35,7 @@
 - 2016.12.22 09:26
     - 2016.12.20 pretty much done
     - 2016.12.21 change curl use proxy model (get proxy source use proxy of generated before)
-    -
-    - 14:50 change count model
+    - 2016.12.22 14:50 change count model
 
         ```
         if  ( proxy ip is good && ex_count>=0 )
