@@ -1,5 +1,16 @@
 # php proxy pool
 
+##description :
+- use php
+- curl
+- [html-parser](https://github.com/bupt1987/html-parser/blob/master/README.md)
+
+
+## current situation :
+- kind of messy !!
+- need to Refact
+- last change curl proxy model has some problem (get proxy source is a little less just around 78)
+
 ##some feel :
 
 - 2016.12.17 22:37
@@ -21,19 +32,8 @@
     - pthread spend me all most one day , and nothing done ... my php Thread Safety is disabled .... i can't change it (until now...i want to cry ~.~)
     - 95% done . except thread and log(little)
 
+- 2016.12.22 09:26
+    - 12.20 pretty much done
+    - 12.21 change curl use proxy model (get proxy source use proxy of generated before)
 
-
-##description :
-- use php
-- curl
-- [html-parser](https://github.com/bupt1987/html-parser/blob/master/README.md)
-
-
-## current situation :
-- get proxy ip from two url
-
-##problem :
-
-- if this project not well in your computer (I JUST KIDDING) , call me
-    - reson: html-parser , I think it's better than simple-html-dom , much faster ,and that project use [composer](https://getcomposer.org/) , and I push github project not .ignore the /simhtmldorn
 
