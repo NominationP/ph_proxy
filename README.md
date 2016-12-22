@@ -7,7 +7,7 @@
 
 
 ## current situation :
-- kind of messy !!
+- kind of messy !! not sug to read just a record
 - need to Refact
 - last change curl proxy model has some problem (get proxy source is a little less just around 78)
 
@@ -33,7 +33,28 @@
     - 95% done . except thread and log(little)
 
 - 2016.12.22 09:26
-    - 12.20 pretty much done
-    - 12.21 change curl use proxy model (get proxy source use proxy of generated before)
+    - 2016.12.20 pretty much done
+    - 2016.12.21 change curl use proxy model (get proxy source use proxy of generated before)
+    -
+    - 14:50 change count model
 
+        ```
+        if  ( proxy ip is good && ex_count>=0 )
+            set count ++
+
+        if  ( proxy ip is good && ex_count<0 )
+            set count = 0
+
+
+        if  ( proxy ip is bad && ex_count>0)
+            set count = -1
+
+        if  ( proxy ip is bad && ex_count<0 && >-5)
+            set count = 0
+
+        if  ( proxy ip is bad && ex_count == -5)
+            delete this proxy ip
+
+
+        ```
 

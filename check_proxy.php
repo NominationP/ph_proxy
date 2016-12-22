@@ -43,13 +43,13 @@ class Check_proxy {
 
         $test_url = "https://www.taobao.com/";
 
-        $count = 0;
+        $count_end = 0;
 
         foreach ($all_proxy as $each_proxy) {
             # code...
-            // $count++;
+            // $count_end++;
 
-            // if($count == 10){
+            // if($count_end == 10){
             //     break;
             // }
 
@@ -75,15 +75,20 @@ class Check_proxy {
                 print $each_proxy['id']." ";
 
                 //if proxy count == 0 --->delete or count--
-                if($count == 0){
+                if($count >= 0){
 
-                    $this->conn->delete_by_id($id,$table_name);
+                    $this->conn->alter($table_name,$id,-1);
 
-                }else{
+                }else if($count > -5){
 
                     $this->conn->alter($table_name,$id,$count-1);
 
+                }else{
+
+                    $this->conn->delete_by_id($id,$table_name);
+
                 }
+
 
             }else{
 
@@ -93,7 +98,15 @@ class Check_proxy {
                 // if in "good_proxy"
                 if($table_name == "good_proxy"){
 
-                    $this->conn->alter($table_name,$id,$count+1);
+                    if($count<0){
+
+                        $this->conn->alter($table_name,$id,0);
+
+                    }else{
+
+                        $this->conn->alter($table_name,$id,$count+1);
+
+                    }
 
                 //not in "good_proxy"
                 }else{

@@ -1,10 +1,18 @@
 <?php
 
-$c = new TopClient;
-$c->appkey = $appkey;
-$c->secretKey = $secret;
-$req = new MixnickGetRequest;
-$req->setNick("tbtest001");
-$resp = $c->execute($req);
+$handle = fopen("log_good.txt", "r");
+if ($handle) {
+    while (($line = fgets($handle)) !== false) {
+        // process the line read.
+        // $string = str_replace(' ', '', $line);
+        $string = preg_replace('/\s+/', '^', $line);
+        $string =substr($string, 0,-1);
+        echo $string."\n";
+    }
+
+    fclose($handle);
+} else {
+    // error opening the file.
+}
 
 ?>

@@ -144,6 +144,8 @@ class Mysql {
 
 // $mys = new Mysql;
 
+// $mys->alter('source_proxy',20242,-1);
+
 // $sql = "INSERT INTO good_proxy (ip,port) VALUES ('111', '2222')";
 // // $mys->insert($sql);
 
