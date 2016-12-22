@@ -36,33 +36,61 @@ class Get_proxy {
      */
     function file_get_contents_curl($url,$proxy=null) {
 
-        try {
+        $ccc = 0;
 
-            usleep(40000);
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,0);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 5); //timeout in seconds
-            curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
-            curl_setopt($ch,CURLOPT_USERAGENT,$this->curl_class->agents[array_rand($this->curl_class->agents)]);
-            if($proxy != null){
+        while (TRUE) {
 
-                curl_setopt($ch, CURLOPT_PROXY, $proxy);
-            }
+            if($ccc == 6) {
 
-            curl_setopt($ch, CURLOPT_HEADER, 0);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-
-            $data = curl_exec($ch);
-            curl_close($ch);
-
-            return $data;
-        }
-            catch(Exception $ex){
-                echo "$ex"." ";
+                echo "ex"." ";
                 return null;
             }
+
+            $ccc++;
+
+            try {
+
+
+                    usleep(40000);
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,0);
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 5); //timeout in seconds
+                    curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
+                    curl_setopt($ch,CURLOPT_USERAGENT,$this->curl_class->agents[array_rand($this->curl_class->agents)]);
+
+                    if($proxy == null){
+
+                        $proxy_ex = $this->curl_class->get_proxy_array();
+                        curl_setopt($ch, CURLOPT_PROXY, $proxy_ex);
+
+                    }else{
+                        curl_setopt($ch, CURLOPT_PROXY, $proxy);
+                    }
+
+                                            curl_setopt($ch, CURLOPT_HEADER, 0);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($ch, CURLOPT_URL, $url);
+                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+                    $data = curl_exec($ch);
+                    curl_close($ch);
+
+
+                    if($proxy == null && $data == null){
+
+                        continue;
+                    }else{
+                        return $data;
+
+                    }
+
+                }catch(Exception $ex){
+
+                    echo "$ex";
+                    continue;
+
+                }
+        }
+
     }
 
     /**
@@ -81,6 +109,7 @@ class Get_proxy {
      * got dom
      */
     function get_dom($url){
+
 
         $sHtml = $this->file_get_contents_curl($url);
 
@@ -104,7 +133,7 @@ class Get_proxy {
     function from_kuaidaili(){
 
         //1-10 pages
-        for ($i=1; $i <= 3 ; $i++) {
+        for ($i=1; $i <= 5 ; $i++) {
 
             print $i." ";
 
@@ -136,7 +165,7 @@ class Get_proxy {
     function from_xicidaili(){
 
         //1-10 pages
-        for ($i=1; $i <= 1 ; $i++) {
+        for ($i=1; $i <= 5 ; $i++) {
 
             print $i." ";
 

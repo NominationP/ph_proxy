@@ -1,9 +1,10 @@
 <?php
 
-$string = "dfdfdf"."\n"."eeeee";
-
-echo $string."\n";
-
-echo $editedText = str_replace(array("\t", "\n", " "),"", $string);
+$c = new TopClient;
+$c->appkey = $appkey;
+$c->secretKey = $secret;
+$req = new MixnickGetRequest;
+$req->setNick("tbtest001");
+$resp = $c->execute($req);
 
 ?>

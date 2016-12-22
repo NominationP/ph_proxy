@@ -53,8 +53,6 @@ class Check_proxy {
             //     break;
             // }
 
-
-
             $test_proxy = $each_proxy['ip'].":".$each_proxy['port'];
             $sHtml = $this->get_proxy->file_get_contents_curl($test_url,$test_proxy);
 
