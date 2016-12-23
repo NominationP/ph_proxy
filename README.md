@@ -59,6 +59,7 @@
 - 2016.12.23 14:11
 
     - fix database datas duplication issue
+
         ```
         // when check source_proxy
         if current proxy ip duplicate with good_proxy : (check good_proxy database)
