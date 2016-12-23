@@ -15,6 +15,8 @@ class Check_proxy {
     public $dup = 0;
 
 
+
+
     function __construct(){
 
         $this->conn = new Mysql;
@@ -53,19 +55,29 @@ class Check_proxy {
             //     break;
             // }
 
-            $test_proxy = $each_proxy['ip'].":".$each_proxy['port'];
+            $t_ip = $each_proxy['ip'];
+            $t_port = $each_proxy['port'];
+
+            $test_proxy = $t_ip.":".$t_port;
             $sHtml = $this->get_proxy->file_get_contents_curl($test_url,$test_proxy);
 
             $id = $each_proxy['id'];
             $count = $each_proxy['count'];
 
-            if($table_name != "good_proxy"){
 
-                if(in_array($test_proxy, $this->set)){
+            //avoid duplicate in good_proxy
+            //
+            if($table_name == "source_proxy"){
+
+                //get all proxy ip from good_proxy
+
+                // $all_good_proxy = $this->conn->get_all_proxy('good_proxy');
+                $re = $this->conn->select("SELECT * FROM good_proxy WHERE ip='$t_ip' AND port='$t_port'");
+
+                if($re != null){
+                    $this->conn->delete_by_id($id,$table_name);
                     $this->dup++;
                     continue;
-                }else{
-                    array_push($this->set, $test_proxy);
                 }
             }
 
@@ -74,14 +86,22 @@ class Check_proxy {
                 $this->bad_count++;
                 print $each_proxy['id']." ";
 
-                //if proxy count == 0 --->delete or count--
-                if($count >= 0){
+                if($table_name == "good_proxy"){
 
-                    $this->conn->alter($table_name,$id,-1);
+                    //if proxy count == 0 --->delete or count--
+                    if($count >= 0){
 
-                }else if($count > -5){
+                        $this->conn->alter($table_name,$id,-1);
 
-                    $this->conn->alter($table_name,$id,$count-1);
+                    }else if($count > -5){
+
+                        $this->conn->alter($table_name,$id,$count-1);
+
+                    }else{
+
+                        $this->conn->delete_by_id($id,$table_name);
+
+                    }
 
                 }else{
 

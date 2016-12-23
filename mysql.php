@@ -104,10 +104,10 @@ class Mysql {
 
             $arr = array();
 
+
             while ($row = $result->fetch_assoc()){
 
                 array_push($arr, $row);
-                // print_r ($row);
             }
 
             return $arr;
@@ -119,6 +119,37 @@ class Mysql {
     }
 
     /**
+     * get all date ---> format ---> proxy ip
+     */
+
+    function get_all_proxy($table_name){
+
+            $sql = "SELECT * FROM ".$table_name;
+
+            $result = $this->conn->query($sql);
+
+            // print_r ($result->num_rows);
+
+            if ($result->num_rows > 0) {
+
+
+                $all_proxy = array();
+
+                while ($row = $result->fetch_assoc()){
+
+                    array_push($all_proxy, $row['ip'].":".$row['port']);
+                }
+
+                return $all_proxy;
+
+            } else {
+
+               return null;
+            }
+        }
+
+
+    /**
      * delete by id
      * @return [type] [description]
      */
@@ -127,6 +158,12 @@ class Mysql {
         $sql = "DELETE FROM $table_name WHERE id=$id";
         $this->conn->query($sql);
 
+    }
+
+    function delete_all($table_name){
+
+        $sql = "DELETE FROM $table_name";
+        $this->conn->query($sql);
     }
 
 
@@ -140,9 +177,46 @@ class Mysql {
         $this->conn->query($sql);
 
     }
+
+    /**
+     * exist
+     * @param  [type] $sql [description]
+     * @return [type]      [description]
+     */
+    function exist($sql){
+
+        return $this->conn->query($sql);
+    }
+
 }
 
 // $mys = new Mysql;
+// $t_ip = "120.92.3.127";
+// $t_port= "80";
+// $re = $mys->select("SELECT * FROM good_proxy WHERE ip='$t_ip' AND port='$t_port'");
+// var_dump($re);
+
+// $re = $mys->select("SELECT * FROM `good_proxy` WHERE `ip`='60.21.209.114' AND `port`='8080'");
+
+// print_r($re);
+
+// $arr = $mys->get_all_proxy('source_proxy');
+// $arr = array_unique($arr);
+
+// $mys->delete_all('source_proxy');
+
+// foreach ($arr as $key) {
+//     # code...
+//     $ip = explode(":", $key);
+//     // print $ip[0]."\n";
+//     // print $ip[1]."\n";
+//     $mys->insert("INSERT INTO source_proxy(ip, port,count) VALUES ('$ip[0]','$ip[1]','0')");
+//     // echo "$key"."\n";
+// }
+
+
+// print_r($arr);
+
 
 // $mys->alter('source_proxy',20242,-1);
 
